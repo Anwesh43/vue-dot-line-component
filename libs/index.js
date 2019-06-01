@@ -1,4 +1,6 @@
 const maxHeight = window.innerHeight / 10
+const delay = 1
+const delayWithinTasks = 50
 
 class Loop {
 
@@ -31,6 +33,23 @@ class Loop {
         }
         if (this.tasks.length == 0) {
             clearInterval(this.interval)
+        }
+    }
+}
+
+class Task {
+
+    constructor(tag, cb) {
+        this.tag = tag
+        this.prevExecuted = new Date().getTime()
+        this.cb = cb
+    }
+
+    execute() {
+        const currTime = new Date().getTime()
+        if (currTime - this.prevExecuted > delayWithinTasks && typeof(this.cb) === "function") {
+            this.prevExecuted = currTime
+            this.cb()
         }
     }
 }
