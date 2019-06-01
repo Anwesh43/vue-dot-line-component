@@ -3,15 +3,17 @@
         <link rel = "stylesheet" href = "styles/index.css">
     </head>
     <body>
+    <div id = "app">
+        <dot-line v-for = "index in indexes" :i = "index">
+        </dot-line>
+    </div>
     <script type = "template/html" id = "dotlinetemplate">
-        <div>
-            <div class = "block" :style ="{top : `${i * (window.innerHeight / 10) + y}px`}" @click = "toggleGrowth">
+            <div class = "block" :style ="{top: `${(i + 1) * maxHeight + y}px`}" @click = "toggleGrowth">
                 <div class = "ball">
                 </div>
-                <div class = "line" :style = "{height: `${y}px`}">
+                <div class = "line" :style = "{height: `${maxHeight * 0.5 * state.scale}px`}">
                 </div>
             </div>
-        </div>
     </script>
     <script src="libs/vue.js">
     </script>

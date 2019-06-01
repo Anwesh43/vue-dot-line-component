@@ -1,11 +1,12 @@
-const maxHeight = window.innerHeight / 10
+const maxHeight = window.innerHeight / 5
 const delay = 1
 const delayWithinTasks = 50
+const factor = 0.5
 
 class Loop {
 
     constructor() {
-        this.tasks = {}
+        this.tasks = []
     }
 
     addTask(task) {
@@ -63,7 +64,7 @@ class State {
     }
 
     update(cb) {
-        this.scale += this.dir * 0.01
+        this.scale += this.dir * 0.1
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir
             this.dir = 0
@@ -82,10 +83,11 @@ class State {
 
 const loop = new Loop()
 
-Vue.Component('dot-line', {
+Vue.component('dot-line', {
     template : '#dotlinetemplate',
     data() {
-        return {y : 0, task : new Task(`tag${this.i}`, this.updateCb.bind(this)), state : new State()}
+        console.log(this.i)
+        return {maxHeight, y : 0, task : new Task(`tag${this.i}`, this.updateCb.bind(this)), state : new State()}
     },
     props : [
         'i'
@@ -93,11 +95,12 @@ Vue.Component('dot-line', {
     methods : {
         toggleGrowth() {
             this.state.startUpdating(() => {
-                loop.addTask(task)
+                loop.addTask(this.task)
             })
         },
         grow() {
-            this.y = maxHeight * this.state.scale
+            this.y = -maxHeight * this.state.scale * factor
+            console.log(this.y)
         },
         updateCb() {
           this.grow()
@@ -106,5 +109,12 @@ Vue.Component('dot-line', {
               this.grow()
           })
         }
+    }
+})
+
+const vueInstance = new Vue({
+    el : '#app',
+    data : {
+        indexes : [0, 1, 2, 3, 4]
     }
 })
