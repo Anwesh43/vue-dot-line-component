@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <link rel = "stylesheet" href = "styles/index.css">
+    </head>
+    <body>
+    <script type = "template/html" id = "dotlinetemplate">
+        <div>
+            <div class = "block" :style ="{top : `${i * (window.innerHeight / 10) + y}px`}" @click = "toggleGrowth">
+                <div class = "ball">
+                </div>
+                <div class = "line" :style = "{height: `${y}px`}">
+                </div>
+            </div>
+        </div>
+    </script>
+    <script src="libs/vue.js">
+    </script>
+    <script src="libs/index.js">
+    </script>
+    </body>
+</html>
