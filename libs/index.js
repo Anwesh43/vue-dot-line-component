@@ -11,7 +11,7 @@ class Loop {
     addTask(task) {
         this.tasks.push(task)
         if (this.tasks.length == 1) {
-
+            this._start()
         }
     }
 
@@ -80,17 +80,31 @@ class State {
     }
 }
 
+const loop = new Loop()
+
 Vue.Component('dot-line', {
     template : '#dotlinetemplate',
     data() {
-        return {y : 0}
+        return {y : 0, task : new Task(`tag${this.i}`, this.updateCb.bind(this)), state : new State()}
     },
+    props : [
+        'i'
+    ],
     methods : {
         toggleGrowth() {
-
+            this.state.startUpdating(() => {
+                loop.addTask(task)
+            })
         },
         grow() {
-            this.y = maxHeight
+            this.y = maxHeight * this.state.scale
+        },
+        updateCb() {
+          this.grow()
+          this.state.update(() => {
+              loop.stop(this.task.tag)
+              this.grow()
+          })
         }
     }
 })
